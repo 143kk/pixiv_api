@@ -40,6 +40,17 @@ $router->group(['prefix' => 'img'], function () use ($router){
 		});
 		return $res->toArray();
 	});
+	$router->group(['prefix' => 'search'], function () use ($router){
+		$router->get('tag/{tags}', function ($tags) {
+			return DB::collection('img')->where('tags', 'like', '%'.$tags.'%')->get();
+		});
+		$router->get('id/{id}', function ($id) {
+			return DB::collection('img')->where('illust_id', '=', (int)$id)->get();
+		});
+		$router->get('userid/{id}', function ($id) {
+			return DB::collection('img')->where('user_id', '=', (int)$id)->get();
+		});
+	});
 });
 
 $router->group(['prefix' => 'date'], function () use ($router){
