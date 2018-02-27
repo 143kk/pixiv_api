@@ -18,6 +18,9 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'img'], function () use ($router){
+	$router->get('first/{date}', function ($date) {
+		return DB::collection('img')->where('wdate', $date)->orderBy('rank', 'asc')->first();
+	});
 	$router->get('date/{date}', function ($date){
 		return DB::collection('img')->where('wdate', $date)->orderBy('rank', 'asc')->get();
 	});
@@ -42,13 +45,13 @@ $router->group(['prefix' => 'img'], function () use ($router){
 	});
 	$router->group(['prefix' => 'search'], function () use ($router){
 		$router->get('tag/{tags}', function ($tags) {
-			return DB::collection('img')->where('tags', 'like', '%'.$tags.'%')->get();
+			return DB::collection('img')->where('tags', 'like', '%'.$tags.'%')->paginate(15);
 		});
 		$router->get('id/{id}', function ($id) {
-			return DB::collection('img')->where('illust_id', '=', (int)$id)->get();
+			return DB::collection('img')->where('illust_id', '=', (int)$id)->paginate(15);
 		});
 		$router->get('userid/{id}', function ($id) {
-			return DB::collection('img')->where('user_id', '=', (int)$id)->get();
+			return DB::collection('img')->where('user_id', '=', (int)$id)->paginate(15);
 		});
 	});
 });
